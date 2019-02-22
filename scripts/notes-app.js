@@ -1,32 +1,31 @@
-const notes = getSaveNotes();
-
-// Define the UI variables
-const searchNotes = document.querySelector('#search-text');
+const searchText = document.querySelector('#search-text');
 const filterBy = document.querySelector('#filter-by');
-const notesElement = document.querySelector('#notes');
+const notesDiv = document.querySelector('#notes');
 const createBtn = document.querySelector('#create-note');
 
-// get the time value
-const now = moment().valueOf()
+const notes = getNotes();
 
-renderNotes(notes)
+render(notes)
 
 createBtn.addEventListener('click', (e) => {
-	const id = uuidv4();
-	notes.push({
-		id: id,
-		title: '',
-		body: '',
-		createdAt: now,
-		updatedAt: now,
-	});
-	saveNotes();
-	location.assign('edit.html#' + id)
+    const id = uuidv4();
+    notes.push({
+        id,
+        title: '',
+        body: '',
+        createdAt: moment().valueOf(),
+        updatedAt: moment().valueOf()
+    })
+    saveNotes();
+    location.assign('edit.html#'+id);
+});
+
+searchText.addEventListener('input', (e) => {
+    render(notes)
 })
 
 filterBy.addEventListener('change', (e) => {
-	const sortValue = e.target.value
-	sortNotes(sortValue, notes);
-	saveNotes()
-	renderNotes(notes)
+    const sortBy = e.target.value;
+    sortNotes(notes, sortBy);
+    render(notes)
 })
